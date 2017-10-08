@@ -1,7 +1,7 @@
 import math
+import win32gui
 import platform
 from ewmh import EWMH
-
 
 class Pouple:
     @staticmethod
@@ -11,10 +11,7 @@ class Pouple:
         if system == 'Linux':
             return PoulpeXlib()
         elif system == 'Windows':
-            if (platform.architecture()[0] == '32bit'):
-                return PoulpeWin32()
-            else:
-                return PoulpeWin64()
+            return PoulpeWin32()
         else:
             raise Error("Invalid platform")
 
@@ -23,16 +20,16 @@ class Pouple:
         pass
 
     def alignLeft(self, percent=50):
-        pass
+        self.align(0, 0, 0, 0)
 
     def alignRight(self, percent=50):
-        pass
+        self.align(0, 0, 0, 0)
 
     def alignTop(self, percent=50):
-        pass
+        self.align(0, 0, 0, 0)
 
     def alignBottom(self, percent=50):
-        pass
+        self.align(0, 0, 0, 0)
 
     def center(self):
         pass
@@ -87,7 +84,36 @@ class PoulpeXlib(Pouple):
 
 
 class PoulpeWin32(Pouple):
-    pass
+    def __init__(self):
+        self.width, self.height = (1920, 1080)
 
-class PoulpeWin64(Pouple):
-    pass
+    def align(self, x, y, width, height, type=''):
+        hwnd = win32gui.GetForegroundWindow()
+        win32gui.SetWindowPos(hwnd, 0, x, y, width, height, 0)
+
+    def alignLeft(self):
+        self.align(0, 0, int(self.width / 2), self.height)
+
+    def alignRight(self):
+        self.align(int(self.width / 2), 0, int(self.width / 2), self.height)
+
+    def alignTop(self):
+        self.align(0, 0, self.width, int(self.height / 2))
+
+    def alignBottom(self):
+        self.align(0, int(self.height / 2), self.width, int(self.height / 2))
+
+    def center(self):
+        hwnd = win32gui.GetForegroundWindow()
+        x, y, x2, y2 = win32gui.GetWindowRect(hwnd)
+
+        width = x2 - x
+        height = y2 - y
+
+        x = math.floor((self.width - width) / 2);
+        y = math.floor((self.height - height - 30) / 2);
+
+        x = x if x > 0 else 0
+        y = y if y > 0 else 0
+        
+        win32gui.SetWindowPos(hwnd, 0, x, y, width, height, 0)

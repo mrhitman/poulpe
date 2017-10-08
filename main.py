@@ -6,8 +6,6 @@ from pouple import Pouple
 if __name__ == '__main__':
     pouple = Pouple.create()
 
-    print(pouple)
-
     keyboard.add_hotkey('ctrl+left arrow', pouple.alignLeft)
     keyboard.add_hotkey('ctrl+right arrow', pouple.alignRight)
     keyboard.add_hotkey('ctrl+up arrow', pouple.alignTop)

@@ -1,2 +1,3 @@
 keyboard
 ewmh
+pypiwin32
