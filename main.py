@@ -12,6 +12,8 @@ if __name__ == '__main__':
     keyboard.add_hotkey('ctrl+down arrow', pouple.alignBottom)
 
     keyboard.add_hotkey('ctrl+alt+f', pouple.center)
+    keyboard.add_hotkey('ctrl+alt+shift+f', pouple.screen)
+    keyboard.add_hotkey('ctrl+q', pouple.test)
 
     while True:
         time.sleep(0.2)

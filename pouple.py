@@ -34,7 +34,11 @@ class Pouple:
     def center(self):
         pass
 
+    def screen(self):
+        pass
 
+    def test(self):
+        pass
 
 class PoulpeXlib(Pouple):
     def __init__(self):
@@ -56,16 +60,16 @@ class PoulpeXlib(Pouple):
         self.ewmh.display.flush()
 
     def alignLeft(self):
-        self.align(0, 0, int(self.width / 2), self.height, '_NET_WM_STATE_MAXIMIZED_VERT')
+        self.align(0, 0, math.floor(self.width / 2), self.height, '_NET_WM_STATE_MAXIMIZED_VERT')
 
     def alignRight(self):
-        self.align(int(self.width / 2), 0, int(self.width / 2), self.height, '_NET_WM_STATE_MAXIMIZED_VERT')
+        self.align(math.floor(self.width / 2), 0, math.floor(self.width / 2), self.height, '_NET_WM_STATE_MAXIMIZED_VERT')
 
     def alignTop(self):
-        self.align(0, 0, self.width, int(self.height / 2), '_NET_WM_STATE_MAXIMIZED_HORZ')
+        self.align(0, 0, self.width, math.floor(self.height / 2), '_NET_WM_STATE_MAXIMIZED_HORZ')
 
     def alignBottom(self):
-        self.align(0, int(self.height / 2), self.width, int(self.height / 2), '_NET_WM_STATE_MAXIMIZED_HORZ')
+        self.align(0, math.floor(self.height / 2), self.width, math.floor(self.height / 2), '_NET_WM_STATE_MAXIMIZED_HORZ')
 
     def center(self):
         win = self.ewmh.getActiveWindow()
@@ -81,8 +85,6 @@ class PoulpeXlib(Pouple):
 
         self.ewmh.display.flush()
 
-
-
 class PoulpeWin32(Pouple):
     def __init__(self):
         _, _, self.width, self.height = win32gui.GetWindowRect(win32gui.GetDesktopWindow())
@@ -92,16 +94,16 @@ class PoulpeWin32(Pouple):
         win32gui.SetWindowPos(hwnd, 0, x, y, width, height, 0)
 
     def alignLeft(self):
-        self.align(0, 0, int(self.width / 2), self.height)
+        self.align(0, 0, math.floor(self.width / 2), self.height)
 
     def alignRight(self):
-        self.align(int(self.width / 2), 0, int(self.width / 2), self.height)
+        self.align(math.floor(self.width / 2), 0, math.floor(self.width / 2), self.height)
 
     def alignTop(self):
-        self.align(0, 0, self.width, int(self.height / 2))
+        self.align(0, 0, self.width, math.floor(self.height / 2))
 
     def alignBottom(self):
-        self.align(0, int(self.height / 2), self.width, int(self.height / 2))
+        self.align(0, math.floor(self.height / 2), self.width, math.floor(self.height / 2))
 
     def center(self):
         hwnd = win32gui.GetForegroundWindow()
@@ -117,3 +119,12 @@ class PoulpeWin32(Pouple):
         y = y if y > 0 else 0
         
         win32gui.SetWindowPos(hwnd, 0, x, y, width, height, 0)
+
+    def screen(self):
+        hwnd = win32gui.GetForegroundWindow()
+        x, y, x2, y2 = win32gui.GetWindowRect(hwnd)
+        win32gui.SetWindowPlacement(hwnd, (2, 3, (-1, -1), (-1, -1), (x, y, x2, y2)))
+
+    def test(self):
+        hwnd = win32gui.GetForegroundWindow()
+        print(win32gui.GetWindowPlacement(hwnd))
