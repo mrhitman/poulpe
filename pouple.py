@@ -47,7 +47,7 @@ class PoulpeXlib(Pouple):
             frame = frame.query_tree().parent
         return frame
 
-    def align(self, x, y, width, height, type):
+    def align(self, x, y, width, height, type=''):
         win = self.frame(self.ewmh.getActiveWindow())
 
         self.ewmh.setMoveResizeWindow(win, 0, x, y, width, height)
@@ -85,7 +85,7 @@ class PoulpeXlib(Pouple):
 
 class PoulpeWin32(Pouple):
     def __init__(self):
-        self.width, self.height = (1920, 1080)
+        _, _, self.width, self.height = win32gui.GetWindowRect(win32gui.GetDesktopWindow())
 
     def align(self, x, y, width, height, type=''):
         hwnd = win32gui.GetForegroundWindow()

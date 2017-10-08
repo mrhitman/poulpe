@@ -14,5 +14,5 @@ if __name__ == '__main__':
     keyboard.add_hotkey('ctrl+alt+f', pouple.center)
 
     while True:
-        time.sleep(0.1)
+        time.sleep(0.2)
 
