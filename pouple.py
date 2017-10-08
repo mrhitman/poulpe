@@ -1,5 +1,4 @@
 import math
-import win32gui
 import platform
 from ewmh import EWMH
 
@@ -41,6 +40,12 @@ class Pouple:
         pass
 
 class PoulpeXlib(Pouple):
+    vert = '_NET_WM_STATE_MAXIMIZED_VERT'
+    horz = '_NET_WM_STATE_MAXIMIZED_HORZ'
+    state_disable = 0
+    state_enable = 1
+    state_toggle = 2
+
     def __init__(self):
         self.ewmh = EWMH()
         self.width, self.height = self.ewmh.getDesktopGeometry()
@@ -53,23 +58,23 @@ class PoulpeXlib(Pouple):
 
     def align(self, x, y, width, height, type=''):
         win = self.frame(self.ewmh.getActiveWindow())
-
+        self.ewmh.setWmState(win, self.state_disable, self.vert)
+        self.ewmh.setWmState(win, self.state_disable, self.horz)
+        self.ewmh.setWmState(win, self.state_enable, type)
         self.ewmh.setMoveResizeWindow(win, 0, x, y, width, height)
-        self.ewmh.setWmState(win, 1, '_NET_WM_STATE_TOGGLE + ' + type)
-
         self.ewmh.display.flush()
 
     def alignLeft(self):
-        self.align(0, 0, math.floor(self.width / 2), self.height, '_NET_WM_STATE_MAXIMIZED_VERT')
+        self.align(0, 0, math.floor(self.width / 2), self.height, self.vert)
 
     def alignRight(self):
-        self.align(math.floor(self.width / 2), 0, math.floor(self.width / 2), self.height, '_NET_WM_STATE_MAXIMIZED_VERT')
+        self.align(math.floor(self.width / 2), 0, math.floor(self.width / 2), self.height, self.vert)
 
     def alignTop(self):
-        self.align(0, 0, self.width, math.floor(self.height / 2), '_NET_WM_STATE_MAXIMIZED_HORZ')
+        self.align(0, 0, self.width, math.floor(self.height / 2), self.horz)
 
     def alignBottom(self):
-        self.align(0, math.floor(self.height / 2), self.width, math.floor(self.height / 2), '_NET_WM_STATE_MAXIMIZED_HORZ')
+        self.align(0, math.floor(self.height / 2), self.width, math.floor(self.height / 2), self.horz)
 
     def center(self):
         win = self.ewmh.getActiveWindow()
@@ -85,11 +90,18 @@ class PoulpeXlib(Pouple):
 
         self.ewmh.display.flush()
 
+    def screen(self):
+        win = self.frame(self.ewmh.getActiveWindow())
+
+        self.ewmh.setWmState(win, self.state_enable, self.vert)
+        self.ewmh.setWmState(win, self.state_enable, self.horz)
+
 class PoulpeWin32(Pouple):
     SW_NORMAL = 1;
     SW_MAXIMIZE = 3;
 
     def __init__(self):
+        import win32gui
         _, _, self.width, self.height = win32gui.GetWindowRect(win32gui.GetDesktopWindow())
 
     def align(self, x, y, width, height, type=''):
