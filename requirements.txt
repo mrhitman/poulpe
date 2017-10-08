@@ -1,3 +1,4 @@
 keyboard
 ewmh
 pypiwin32
+configparser

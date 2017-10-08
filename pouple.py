@@ -86,11 +86,15 @@ class PoulpeXlib(Pouple):
         self.ewmh.display.flush()
 
 class PoulpeWin32(Pouple):
+    SW_NORMAL = 1;
+    SW_MAXIMIZE = 3;
+
     def __init__(self):
         _, _, self.width, self.height = win32gui.GetWindowRect(win32gui.GetDesktopWindow())
 
     def align(self, x, y, width, height, type=''):
         hwnd = win32gui.GetForegroundWindow()
+        win32gui.SetWindowPlacement(hwnd, (0, self.SW_NORMAL, (-1, -1), (-1, -1), (x, y, x + width, y + height)))
         win32gui.SetWindowPos(hwnd, 0, x, y, width, height, 0)
 
     def alignLeft(self):
@@ -123,7 +127,7 @@ class PoulpeWin32(Pouple):
     def screen(self):
         hwnd = win32gui.GetForegroundWindow()
         x, y, x2, y2 = win32gui.GetWindowRect(hwnd)
-        win32gui.SetWindowPlacement(hwnd, (2, 3, (-1, -1), (-1, -1), (x, y, x2, y2)))
+        win32gui.SetWindowPlacement(hwnd, (2, self.SW_MAXIMIZE, (-1, -1), (-1, -1), (x, y, x2, y2)))
 
     def test(self):
         hwnd = win32gui.GetForegroundWindow()
