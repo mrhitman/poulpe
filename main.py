@@ -2,7 +2,11 @@ import time
 import keyboard
 import configparser
 from pouple import Pouple
+from history import History
 
+def command(cmd, history):
+    history.add(cmd)
+    cmd()
 
 if __name__ == '__main__':
     pouple = Pouple.create()
@@ -10,7 +14,9 @@ if __name__ == '__main__':
     cfg = configparser.RawConfigParser()
     cfg.read('settings.cfg')
 
-    keyboard.add_hotkey(cfg.get('keys', 'align_left'), pouple.alignLeft)
+    history = History()
+
+    keyboard.add_hotkey(cfg.get('keys', 'align_left'), lambda: command(pouple.alignLeft, history))
     keyboard.add_hotkey(cfg.get('keys', 'align_right'), pouple.alignRight)
     keyboard.add_hotkey(cfg.get('keys', 'align_top'), pouple.alignTop)
     keyboard.add_hotkey(cfg.get('keys', 'align_bottom'), pouple.alignBottom)
@@ -21,4 +27,5 @@ if __name__ == '__main__':
     keyboard.add_hotkey('ctrl+q', pouple.test)
 
     while True:
+        print(len(history.items))
         time.sleep(0.2)

@@ -3,7 +3,7 @@ class History:
         self.items = [];
 
     def add(self, item):
-        self.items.push(item)
+        self.items.append(item)
 
     def undo(self):
         pass
