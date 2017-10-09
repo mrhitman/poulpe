@@ -8,7 +8,7 @@ if system == 'Linux':
 elif system == 'Windows':
     import win32gui
 elif system == 'Darwin':
-    pass
+    raise Exception("Darwin systems doesn't support yet")
 
 
 class Pouple:
