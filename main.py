@@ -29,5 +29,4 @@ if __name__ == '__main__':
     keyboard.add_hotkey('ctrl+q', pouple.test)
 
     while True:
-        print(len(history.items))
         time.sleep(0.2)
