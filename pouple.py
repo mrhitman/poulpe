@@ -1,33 +1,41 @@
 import math
 import platform
-from ewmh import EWMH
+
+system = platform.system()
+
+print(system)
+if system == 'Linux':
+    from ewmh import EWMH
+elif system == 'Windows':
+    import win32gui
+
 
 class Pouple:
+    def __init__(self):
+        pass
+
     @staticmethod
     def create():
-        system = platform.system()
-
         if system == 'Linux':
-            return PoulpeXlib()
+            return PoupleXlib()
         elif system == 'Windows':
-            return PoulpeWin32()
+            return PoupleWin32()
         else:
-            raise Error("Invalid platform")
-
+            raise Exception("Invalid platform")
 
     def align(self, x, y, width, height, type=''):
         pass
 
-    def alignLeft(self, percent=50):
+    def align_left(self, percent=50):
         self.align(0, 0, 0, 0)
 
-    def alignRight(self, percent=50):
+    def align_right(self, percent=50):
         self.align(0, 0, 0, 0)
 
-    def alignTop(self, percent=50):
+    def align_top(self, percent=50):
         self.align(0, 0, 0, 0)
 
-    def alignBottom(self, percent=50):
+    def align_bottom(self, percent=50):
         self.align(0, 0, 0, 0)
 
     def center(self):
@@ -39,7 +47,8 @@ class Pouple:
     def test(self):
         pass
 
-class PoulpeXlib(Pouple):
+
+class PoupleXlib(Pouple):
     vert = '_NET_WM_STATE_MAXIMIZED_VERT'
     horz = '_NET_WM_STATE_MAXIMIZED_HORZ'
     state_disable = 0
@@ -64,16 +73,16 @@ class PoulpeXlib(Pouple):
         self.ewmh.setMoveResizeWindow(win, 0, x, y, width, height)
         self.ewmh.display.flush()
 
-    def alignLeft(self):
+    def align_left(self):
         self.align(0, 0, math.floor(self.width / 2), self.height, self.vert)
 
-    def alignRight(self):
+    def align_right(self):
         self.align(math.floor(self.width / 2), 0, math.floor(self.width / 2), self.height, self.vert)
 
-    def alignTop(self):
+    def align_top(self):
         self.align(0, 0, self.width, math.floor(self.height / 2), self.horz)
 
-    def alignBottom(self):
+    def align_bottom(self):
         self.align(0, math.floor(self.height / 2), self.width, math.floor(self.height / 2), self.horz)
 
     def center(self):
@@ -85,7 +94,7 @@ class PoulpeXlib(Pouple):
 
         x = x if x > 0 else 0
         y = y if y > 0 else 0
-        
+
         self.ewmh.setMoveResizeWindow(win, 0, x, y, g.width, g.height)
 
         self.ewmh.display.flush()
@@ -96,12 +105,12 @@ class PoulpeXlib(Pouple):
         self.ewmh.setWmState(win, self.state_enable, self.vert)
         self.ewmh.setWmState(win, self.state_enable, self.horz)
 
-class PoulpeWin32(Pouple):
+
+class PoupleWin32(Pouple):
     SW_NORMAL = 1;
     SW_MAXIMIZE = 3;
 
     def __init__(self):
-        import win32gui
         _, _, self.width, self.height = win32gui.GetWindowRect(win32gui.GetDesktopWindow())
 
     def align(self, x, y, width, height, type=''):
@@ -109,16 +118,16 @@ class PoulpeWin32(Pouple):
         win32gui.SetWindowPlacement(hwnd, (0, self.SW_NORMAL, (-1, -1), (-1, -1), (x, y, x + width, y + height)))
         win32gui.SetWindowPos(hwnd, 0, x, y, width, height, 0)
 
-    def alignLeft(self):
+    def align_left(self):
         self.align(0, 0, math.floor(self.width / 2), self.height)
 
-    def alignRight(self):
+    def align_right(self):
         self.align(math.floor(self.width / 2), 0, math.floor(self.width / 2), self.height)
 
-    def alignTop(self):
+    def align_top(self):
         self.align(0, 0, self.width, math.floor(self.height / 2))
 
-    def alignBottom(self):
+    def align_bottom(self):
         self.align(0, math.floor(self.height / 2), self.width, math.floor(self.height / 2))
 
     def center(self):
@@ -133,7 +142,7 @@ class PoulpeWin32(Pouple):
 
         x = x if x > 0 else 0
         y = y if y > 0 else 0
-        
+
         win32gui.SetWindowPos(hwnd, 0, x, y, width, height, 0)
 
     def screen(self):
