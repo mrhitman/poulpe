@@ -45,7 +45,7 @@ class Pouple:
     def screen(self):
         pass
 
-    def test(self):
+    def fullscreen(self):
         pass
 
 
@@ -64,17 +64,18 @@ class PoupleXlib(Pouple):
         self.ewmh = EWMH()
         self.width, self.height = self.ewmh.getDesktopGeometry()
 
-    def frame(self, client):
-        frame = client
+    def frame(self, frame):
         while frame.query_tree().parent != self.ewmh.root:
             frame = frame.query_tree().parent
         return frame
 
-    def align(self, x, y, width, height, type=''):
-        win = self.frame(self.ewmh.getActiveWindow())
+    def unmaximize(self, win):
         self.ewmh.setWmState(win, self.state_disable, self.vert)
         self.ewmh.setWmState(win, self.state_disable, self.horz)
-        self.ewmh.setWmState(win, self.state_enable, type)
+
+    def align(self, x, y, width, height, type=''):
+        win = self.ewmh.getActiveWindow()
+        self.unmaximize(win)
         self.ewmh.setMoveResizeWindow(win, 0, x, y, width, height)
         self.ewmh.display.flush()
 
@@ -92,10 +93,11 @@ class PoupleXlib(Pouple):
 
     def center(self):
         win = self.ewmh.getActiveWindow()
-        g = self.frame(win).get_geometry()
+        g = win.get_geometry()
 
         x = (self.width - g.width) // 2
-        y = (self.height - g.height - 30) // 2
+        y = (self.height - g.height) // 2
+
 
         x = x if x > 0 else 0
         y = y if y > 0 else 0
@@ -106,9 +108,15 @@ class PoupleXlib(Pouple):
 
     def screen(self):
         win = self.frame(self.ewmh.getActiveWindow())
+        self.unmaximize(win)
+        self.ewmh.setMoveResizeWindow(win, 0, 0, 0, self.width, self.height)
+        self.ewmh.display.flush()
 
+    def fullscreen(self):
+        win = self.frame(self.ewmh.getActiveWindow())
         self.ewmh.setWmState(win, self.state_enable, self.vert)
         self.ewmh.setWmState(win, self.state_enable, self.horz)
+        self.ewmh.display.flush()
 
 
 class PoupleWin32(Pouple):
