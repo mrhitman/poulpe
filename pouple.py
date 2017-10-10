@@ -98,12 +98,10 @@ class PoupleXlib(Pouple):
         x = (self.width - g.width) // 2
         y = (self.height - g.height) // 2
 
-
         x = x if x > 0 else 0
         y = y if y > 0 else 0
 
         self.ewmh.setMoveResizeWindow(win, 0, x, y, g.width, g.height)
-
         self.ewmh.display.flush()
 
     def screen(self):
