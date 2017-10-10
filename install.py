@@ -2,7 +2,8 @@ import pip
 
 __all__ = [
     "keyboard",
-    "configparser"
+    "configparser",
+    "PyQt5"
 ]
 
 windows = ["pypiwin32"]
