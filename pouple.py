@@ -1,15 +1,12 @@
-import math
-import platform
+from sys import platform
 
-system = platform.system()
-
-if system == 'Linux':
+if platform.startswith('linux'):
     from ewmh import EWMH
-elif system == 'Windows':
+elif platform == 'windows':
     import win32gui
     import win32api
-elif system == 'Darwin':
-    raise Exception("Darwin systems doesn't support yet")
+elif platform == 'darwin':
+    from AppKit import NSWorkspace, NSScreen
 
 
 class Pouple:
@@ -18,11 +15,11 @@ class Pouple:
 
     @staticmethod
     def create():
-        if system == 'Linux':
+        if platform.startswith('linux'):
             return PoupleXlib()
-        elif system == 'Windows':
+        elif platform == 'windows':
             return PoupleWin32()
-        elif system == 'Darwin':
+        elif platform == 'darwin':
             return PoupleOSX()
         else:
             raise Exception("Invalid platform")
@@ -124,7 +121,7 @@ class PoupleWin32(Pouple):
 
     def __init__(self):
         Pouple.__init__(self)
-        
+
         h_monit = win32api.EnumDisplayMonitors()[0][0].handle
         _, _, self.width, self.height = win32api.GetMonitorInfo(h_monit)['Work']
 
@@ -173,3 +170,9 @@ class PoupleWin32(Pouple):
 class PoupleOSX(Pouple):
     def __init__(self):
         Pouple.__init__(self)
+        from time import sleep
+        # while True:
+        # app = NSWorkspace.sharedWorkspace().activeApplication()
+        self.width, self.height = NSScreen.mainScreen().frame().size
+        print(NSWorkspace.sharedWorkspace())
+        # sleep(0.5)

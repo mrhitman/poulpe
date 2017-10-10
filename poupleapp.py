@@ -29,7 +29,7 @@ class MainWindow(QMainWindow):
 if __name__ == "__main__":
     import sys
     from history import History
-    import keyboard
+    # import keyboard
     import configparser
     from pouple import Pouple
 
@@ -40,15 +40,13 @@ if __name__ == "__main__":
 
     history = History()
 
-    keyboard.add_hotkey(cfg.get('keys', 'align_left'), lambda: command(pouple.align_left, history))
-    keyboard.add_hotkey(cfg.get('keys', 'align_right'), pouple.align_right)
-    keyboard.add_hotkey(cfg.get('keys', 'align_top'), pouple.align_top)
-    keyboard.add_hotkey(cfg.get('keys', 'align_bottom'), pouple.align_bottom)
-
-    keyboard.add_hotkey(cfg.get('keys', 'center'), pouple.center)
-    keyboard.add_hotkey(cfg.get('keys', 'screen'), pouple.screen)
-
-    keyboard.add_hotkey('ctrl+q', pouple.test)
+    # keyboard.add_hotkey(cfg.get('keys', 'align_left'), lambda: command(pouple.align_left, history))
+    # keyboard.add_hotkey(cfg.get('keys', 'align_right'), pouple.align_right)
+    # keyboard.add_hotkey(cfg.get('keys', 'align_top'), pouple.align_top)
+    # keyboard.add_hotkey(cfg.get('keys', 'align_bottom'), pouple.align_bottom)
+    #
+    # keyboard.add_hotkey(cfg.get('keys', 'center'), pouple.center)
+    # keyboard.add_hotkey(cfg.get('keys', 'screen'), pouple.screen)
 
     app = QApplication(sys.argv)
     mw = MainWindow()
