@@ -7,6 +7,7 @@ if system == 'Linux':
     from ewmh import EWMH
 elif system == 'Windows':
     import win32gui
+    import win32api
 elif system == 'Darwin':
     raise Exception("Darwin systems doesn't support yet")
 
@@ -81,23 +82,23 @@ class PoupleXlib(Pouple):
         self.ewmh.display.flush()
 
     def align_left(self, percent=50):
-        self.align(0, 0, math.floor(self.width / 2), self.height, self.vert)
+        self.align(0, 0, self.width // 2, self.height, self.vert)
 
     def align_right(self, percent=50):
-        self.align(math.floor(self.width / 2), 0, math.floor(self.width / 2), self.height, self.vert)
+        self.align(self.width // 2, 0, self.width // 2, self.height, self.vert)
 
     def align_top(self, percent=50):
-        self.align(0, 0, self.width, math.floor(self.height / 2), self.horz)
+        self.align(0, 0, self.width, self.height // 2, self.horz)
 
     def align_bottom(self, percent=50):
-        self.align(0, math.floor(self.height / 2), self.width, math.floor(self.height / 2), self.horz)
+        self.align(0, self.height // 2, self.width, self.height // 2, self.horz)
 
     def center(self):
         win = self.ewmh.getActiveWindow()
         g = self.frame(win).get_geometry()
 
-        x = math.floor((self.width - g.width) / 2)
-        y = math.floor((self.height - g.height - 30) / 2)
+        x = (self.width - g.width) // 2
+        y = (self.height - g.height - 30) // 2
 
         x = x if x > 0 else 0
         y = y if y > 0 else 0
@@ -119,10 +120,13 @@ class PoupleWin32(Pouple):
     '''
     SW_NORMAL = 1
     SW_MAXIMIZE = 3
+    OFFSET = 2
 
     def __init__(self):
         Pouple.__init__(self)
-        _, _, self.width, self.height = win32gui.GetWindowRect(win32gui.GetDesktopWindow())
+        
+        h_monit = win32api.EnumDisplayMonitors()[0][0].handle
+        _, _, self.width, self.height = win32api.GetMonitorInfo(h_monit)['Work']
 
     def align(self, x, y, width, height, type=''):
         hwnd = win32gui.GetForegroundWindow()
@@ -130,16 +134,16 @@ class PoupleWin32(Pouple):
         win32gui.SetWindowPos(hwnd, 0, x, y, width, height, 0)
 
     def align_left(self, percent=50):
-        self.align(0, 0, math.floor(self.width / 2), self.height)
+        self.align(self.OFFSET, self.OFFSET, self.width // 2 + self.OFFSET, self.height)
 
     def align_right(self, percent=50):
-        self.align(math.floor(self.width / 2), 0, math.floor(self.width / 2), self.height)
+        self.align(self.width // 2 - self.OFFSET, self.OFFSET, self.width // 2, self.height)
 
     def align_top(self, percent=50):
-        self.align(0, 0, self.width, math.floor(self.height / 2))
+        self.align(self.OFFSET, self.OFFSET, self.width, self.height // 2)
 
     def align_bottom(self, percent=50):
-        self.align(0, math.floor(self.height / 2), self.width, math.floor(self.height / 2))
+        self.align(self.OFFSET, self.height // 2, self.width, self.height // 2)
 
     def center(self):
         hwnd = win32gui.GetForegroundWindow()
@@ -148,8 +152,8 @@ class PoupleWin32(Pouple):
         width = x2 - x
         height = y2 - y
 
-        x = math.floor((self.width - width) / 2)
-        y = math.floor((self.height - height - 30) / 2)
+        x = (self.width - width) // 2
+        y = (self.height - height - 30) // 2
 
         x = x if x > 0 else 0
         y = y if y > 0 else 0
