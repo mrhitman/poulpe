@@ -66,7 +66,7 @@ class Xlib(Api):
     @staticmethod
     def set_win_size(hwnd, x, y, width, height):
         ewmh = EWMH()
-        ewmh.setMoveResizeWindow(win, 0, x, y, width, height)
+        ewmh.setMoveResizeWindow(hwnd, 0, x, y, width, height)
         ewmh.display.flush()
 
     @staticmethod
