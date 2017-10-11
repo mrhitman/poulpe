@@ -6,7 +6,7 @@ elif platform == 'windows':
     import win32gui
     import win32api
 elif platform == 'darwin':
-    from AppKit import NSScreen
+    from AppKit import NSWorkspace, NSScreen, NSWindow
 
 
 def get_api():
@@ -120,7 +120,8 @@ class Win32(Api):
 class Darwin(Api):
     @staticmethod
     def get_top_window():
-        raise Exception("Abstract method")
+        # return NSWorkspace.sharedWorkspace().activeApplication()
+        return NSWindow.windowController
 
     @staticmethod
     def get_desktop():
@@ -137,8 +138,8 @@ class Darwin(Api):
 
     @staticmethod
     def maximize(hwnd):
-        raise Exception("Abstract method")
+        hwnd.toggleFullScreen()
 
     @staticmethod
     def unmaximize(hwnd, x, y, width, height):
-        raise Exception("Abstract method")
+        hwnd.toggleFullScreen()

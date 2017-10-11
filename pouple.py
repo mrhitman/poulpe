@@ -3,9 +3,10 @@ from api import get_api
 
 class Pouple:
     def __init__(self):
-        Pouple.__init__(self)
         self.api = get_api()
         _, _, self.width, self.height = self.api.get_desktop()
+        app = self.api.get_top_window()
+        print(app)
 
     def align(self, x, y, width, height):
         hwnd = self.api.get_top_window()

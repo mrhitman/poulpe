@@ -24,7 +24,7 @@ class MainWindow(QMainWindow):
 
         self.tray_icon.setContextMenu(tray_menu)
         self.tray_icon.show()
-        self.pouple = Pouple.create()
+        self.pouple = Pouple()
         self.history = History()
 
     def command(self, cmd):

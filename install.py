@@ -10,7 +10,7 @@ windows = ["pypiwin32"]
 
 linux = ["ewmh"]
 
-darwin = ["pyobjc-framework-Quartz"]
+darwin = ["pyobjc", "pyobjc-framework-Quartz"]
 
 
 def install(packages):
