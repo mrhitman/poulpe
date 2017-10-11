@@ -113,7 +113,6 @@ class Win32(Api):
 
     @staticmethod
     def unmaximize(hwnd, x, y, width, height):
-        import win32gui
         SW_NORMAL = 1
         win32gui.SetWindowPlacement(hwnd, (0, SW_NORMAL, (-1, -1), (-1, -1), (x, y, x + width, y + height)))
 
