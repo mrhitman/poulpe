@@ -57,11 +57,13 @@ class Xlib(Api):
     @staticmethod
     def get_desktop():
         ewmh = EWMH()
-        return ewmh.getDesktopGeometry()
+        width, height = ewmh.getDesktopGeometry()
+        return 0, 0, width, height
 
     @staticmethod
     def get_win_size(hwnd):
-        return hwnd.get_geometry()
+        gm = hwnd.get_geometry()
+        return gm.x, gm.y, gm.width, gm.height
 
     @staticmethod
     def set_win_size(hwnd, x, y, width, height):

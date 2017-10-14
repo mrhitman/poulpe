@@ -26,6 +26,7 @@ class MainWindow(QMainWindow):
         self.tray_icon.show()
         self.pouple = Pouple()
         self.history = History()
+        self.bind_keys()
 
     def command(self, cmd):
         def execute():

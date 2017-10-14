@@ -6,7 +6,6 @@ class Pouple:
         self.api = get_api()
         _, _, self.width, self.height = self.api.get_desktop()
         app = self.api.get_top_window()
-        print(app)
 
     def align(self, x, y, width, height):
         hwnd = self.api.get_top_window()
