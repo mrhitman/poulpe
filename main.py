@@ -3,6 +3,7 @@ import configparser
 from pouple import Pouple
 from history import History
 from PyQt5.QtWidgets import QApplication, QMainWindow, QSystemTrayIcon, QMenu, QAction, QStyle, qApp, QWidget
+from PyQt5.QtGui import QIcon
 
 
 class MainWindow(QMainWindow):
@@ -11,13 +12,13 @@ class MainWindow(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
         self.tray_icon = QSystemTrayIcon(self)
-        self.tray_icon.setIcon(self.style().standardIcon(QStyle.SP_ComputerIcon))
+        self.tray_icon.setIcon(QIcon('icon.png'))
         self.hide()
 
         central_widget = QWidget(self)
         self.setCentralWidget(central_widget)
 
-        quit_action = QAction("Quit", self)
+        quit_action = QAction("quit", self)
         quit_action.triggered.connect(qApp.quit)
         tray_menu = QMenu()
         tray_menu.addAction(quit_action)
