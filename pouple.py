@@ -8,8 +8,9 @@ class Pouple:
 
     def align(self, x, y, width, height):
         hwnd = self.api.get_top_window()
+        x, y, width, height = map(int, [x, y, width, height])
         self.api.unmaximize(hwnd, x, y, width, height)
-        self.api.set_win_size(hwnd, int(x), int(y), int(width), int(height))
+        self.api.set_win_size(hwnd, x, y, width, height)
 
     def align_left(self, proportion=0.5):
         self.align(0, 0, self.width * proportion, self.height)

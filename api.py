@@ -2,7 +2,7 @@ from sys import platform
 
 if platform.startswith('linux'):
     from ewmh import EWMH
-elif platform == 'windows':
+elif platform.startswith('win'):
     import win32gui
     import win32api
 elif platform == 'darwin':
@@ -12,7 +12,7 @@ elif platform == 'darwin':
 def get_api():
     if platform.startswith('linux'):
         return Xlib
-    elif platform == 'windows':
+    elif platform.startswith('win'):
         return Win32
     elif platform == 'darwin':
         return Darwin
@@ -47,6 +47,7 @@ class Api():
     def get_workspace_count():
         raise Exception("Abstract method")
 
+
 class Xlib(Api):
     @staticmethod
     def get_top_window():
@@ -71,7 +72,7 @@ class Xlib(Api):
         ewmh.display.flush()
 
     @staticmethod
-    def maximize(hwnd): 
+    def maximize(hwnd):
         ewmh = EWMH()
         ewmh.setWmState(hwnd, 1, '_NET_WM_STATE_FULLSCREEN')
         ewmh.display.flush()
