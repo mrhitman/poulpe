@@ -1,4 +1,4 @@
-# pouple
+# poulpe
 Cross platform win manager
 
 # supported planforms
